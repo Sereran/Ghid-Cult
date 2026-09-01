@@ -1,17 +1,13 @@
+<script setup lang="ts">
+const route = useRoute()
+
+const isAdmin = computed(() => route.path.startsWith('/admin'))
+</script>
+
 <template>
-  <div class="min-h-screen bg-[#030f0e] text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white flex flex-col justify-between overflow-x-hidden">
-    <!-- Persistent Header -->
-    <AppHeader />
-
-    <!-- Persistent Floating Social Icons -->
-    <SocialSidebar />
-
-    <!-- Page Content Slot -->
-    <main class="flex-grow">
+  <main class="flex-grow">
+    <NuxtLayout>
       <NuxtPage />
-    </main>
-
-    <!-- Persistent Footer -->
-    <AppFooter />
-  </div>
+    </NuxtLayout>
+  </main>
 </template>

@@ -1,27 +1,51 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
+import { MapPin, Clock, Users, Star, ArrowLeft, Check, X, Minus, Plus, ShoppingBag } from 'lucide-vue-next'
 import { tours } from '~/data/tours'
-import { computed } from 'vue'
-import { MapPin, Clock, Users, Star, ArrowLeft, Check, X } from 'lucide-vue-next'
 
 const route = useRoute()
+const { addToCart, items } = useCart()
 
-const currentTour = computed(() => tours.find((t) => t.id === route.params.id))
+// Local counter and button feedback
+const persons = ref(1)
+const added = ref(false)
+
+// Match current tour by ID
+const currentTour = computed(() => {
+  return tours.find((t) => t.id === route.params.id)
+})
 
 // Related tours
-const relatedTours = computed(() => tours.filter((t) => t.id !== route.params.id).slice(0, 3))
+const relatedTours = computed(() => {
+  if (!currentTour.value) return []
+  return tours.filter((t) => t.id !== currentTour.value?.id).slice(0, 3)
+})
 
-// Dynamic head tags
+// Check if already in cart
+const inCart = computed(() => {
+  return items.value.some((i) => i.tourId === currentTour.value?.id)
+})
+
+const handleAdd = () => {
+  if (!currentTour.value) return
+  addToCart(currentTour.value.id, persons.value)
+  added.value = true
+  setTimeout(() => {
+    added.value = false
+  }, 2000)
+}
+
 useHead({
-  title: computed(() => currentTour.value ? `${currentTour.value.title} | GhidCultural` : 'Tour Not Found | GhidCultural')
+  title: computed(() => currentTour.value ? `${currentTour.value.title} | GhidCult` : 'Tour Not Found')
 })
 </script>
 
 <template>
   <div class="pt-[72px] min-h-screen">
 
-    <!-- 404 Page -->
+    <!-- 404 Status -->
     <div v-if="!currentTour" class="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-6 text-center">
-      <p class="text-slate-400 text-lg">Tour not found.</p>
+      <p class="text-slate-400 text-lg font-mono">Tour not found.</p>
       <NuxtLink to="/tours" class="text-white hover:text-emerald-400 underline text-sm transition-colors">
         Back to all tours
       </NuxtLink>
@@ -54,13 +78,12 @@ useHead({
           </span>
         </div>
 
-        <!-- Title & Info -->
         <div class="absolute bottom-0 inset-x-0 px-6 sm:px-12 lg:px-16 pb-12">
           <div class="max-w-[1440px] mx-auto">
             <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4 tracking-tight">
               {{ currentTour.title }}
             </h1>
-            <div class="flex flex-wrap items-center gap-6 text-slate-300 text-xs sm:text-sm">
+            <div class="flex flex-wrap items-center gap-6 text-slate-300 text-xs sm:text-sm font-mono">
               <span class="flex items-center gap-1.5"><MapPin :size="14" class="text-emerald-400" />{{ currentTour.location }}</span>
               <span class="flex items-center gap-1.5"><Clock :size="14" />{{ currentTour.duration }}</span>
               <span class="flex items-center gap-1.5"><Users :size="14" />{{ currentTour.groupSize }}</span>
@@ -73,19 +96,16 @@ useHead({
         </div>
       </div>
 
-      <!-- Main Layout Body -->
       <div class="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-16">
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 items-start">
 
-          <!-- Overview & Content -->
+          <!-- Overview and Content -->
           <div class="flex flex-col gap-12">
-            
-            <!-- Short description -->
             <p class="text-slate-200 text-lg sm:text-xl leading-relaxed border-l-4 border-emerald-400 pl-6 italic">
               {{ currentTour.shortDescription }}
             </p>
 
-            <!-- Full Description -->
+            <!-- Description -->
             <div v-if="currentTour.fullDescription">
               <p class="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold mb-4">About this tour</p>
               <div class="text-slate-300 text-sm sm:text-base leading-relaxed space-y-4">
@@ -96,7 +116,7 @@ useHead({
             </div>
 
             <!-- Highlights -->
-            <div>
+            <div v-if="currentTour.highlights?.length">
               <p class="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold mb-5">Highlights</p>
               <ul class="space-y-3">
                 <li v-for="h in currentTour.highlights" :key="h" class="flex items-start gap-3 text-sm text-slate-200">
@@ -107,8 +127,8 @@ useHead({
             </div>
 
             <!-- Inclusions & Exclusions -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-white/10 pt-10">
-              <div>
+            <div v-if="currentTour.included?.length || currentTour.notIncluded?.length" class="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-white/10 pt-10">
+              <div v-if="currentTour.included?.length">
                 <p class="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold mb-4">Included</p>
                 <ul class="space-y-3">
                   <li v-for="item in currentTour.included" :key="item" class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
@@ -117,7 +137,7 @@ useHead({
                   </li>
                 </ul>
               </div>
-              <div>
+              <div v-if="currentTour.notIncluded?.length">
                 <p class="text-[11px] tracking-[0.2em] uppercase text-rose-400 font-semibold mb-4">Not included</p>
                 <ul class="space-y-3">
                   <li v-for="item in currentTour.notIncluded" :key="item" class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-400">
@@ -129,7 +149,7 @@ useHead({
             </div>
 
             <!-- Meeting Point -->
-            <div class="border-t border-white/10 pt-8">
+            <div v-if="currentTour.meetingPoint" class="border-t border-white/10 pt-8">
               <p class="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold mb-3">Meeting point</p>
               <p class="flex items-start gap-2 text-sm text-slate-300">
                 <MapPin :size="16" class="shrink-0 mt-0.5 text-emerald-400" />
@@ -138,13 +158,13 @@ useHead({
             </div>
 
             <!-- Languages -->
-            <div>
+            <div v-if="currentTour.languages?.length">
               <p class="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold mb-3">Languages</p>
               <div class="flex flex-wrap gap-2">
                 <span 
                   v-for="lang in currentTour.languages" 
                   :key="lang" 
-                  class="text-xs text-slate-300 border border-white/15 bg-neutral-900/60 px-3 py-1 rounded-md"
+                  class="text-xs text-slate-300 border border-white/15 bg-neutral-900/60 px-3 py-1 rounded-md font-mono"
                 >
                   {{ lang }}
                 </span>
@@ -152,16 +172,16 @@ useHead({
             </div>
           </div>
 
-          <!-- Sticky Booking Card -->
+          <!-- Booking and Cart -->
           <div class="lg:sticky lg:top-[92px]">
             <div class="bg-neutral-900/80 border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col gap-6 shadow-2xl backdrop-blur-xl">
               <div>
-                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1">Price per person</p>
+                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1 font-mono">Price per person</p>
                 <p class="text-white font-bold text-4xl sm:text-5xl font-mono leading-none">${{ currentTour.price }}</p>
               </div>
 
-              <!-- Quick Specs -->
-              <div class="flex flex-col gap-3.5 text-xs sm:text-sm text-slate-300 border-t border-white/10 pt-5">
+              <!-- Quick Specifications -->
+              <div class="flex flex-col gap-3.5 text-xs sm:text-sm text-slate-300 border-t border-white/10 pt-5 font-mono">
                 <div class="flex items-center justify-between">
                   <span class="flex items-center gap-2 text-slate-400"><Clock :size="14" />Duration</span>
                   <span class="font-medium text-white">{{ currentTour.duration }}</span>
@@ -176,14 +196,53 @@ useHead({
                 </div>
               </div>
 
+              <!-- Person Counter -->
+              <div class="border-t border-white/10 pt-5">
+                <p class="text-[11px] tracking-wider uppercase text-slate-400 font-semibold mb-3 font-mono">Persons</p>
+                <div class="flex items-center border border-white/15 rounded-xl w-fit overflow-hidden bg-white/5">
+                  <button
+                    type="button"
+                    @click="persons = Math.max(1, persons - 1)"
+                    :disabled="persons <= 1"
+                    class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-20 transition-colors"
+                  >
+                    <Minus :size="14" />
+                  </button>
+                  <span class="w-10 h-10 flex items-center justify-center text-sm font-bold font-mono text-white border-x border-white/15">
+                    {{ persons }}
+                  </span>
+                  <button
+                    type="button"
+                    @click="persons++"
+                    class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                  >
+                    <Plus :size="14" />
+                  </button>
+                </div>
+                <p class="text-xs text-emerald-400 font-mono font-semibold mt-2.5">
+                  Total: ${{ currentTour.price * persons }}
+                </p>
+              </div>
+
+              <!-- Cart Button -->
               <button 
                 type="button" 
-                class="w-full bg-white hover:bg-neutral-100 text-neutral-900 text-sm sm:text-base font-bold py-4 rounded-full transition-all duration-200 shadow-xl hover:scale-[1.02] active:scale-95"
+                @click="handleAdd"
+                :disabled="added"
+                :class="[
+                  'w-full flex items-center justify-center gap-2 text-sm sm:text-base font-bold py-4 rounded-full transition-all duration-200 shadow-xl',
+                  added
+                    ? 'bg-emerald-500 text-white cursor-default'
+                    : inCart
+                    ? 'bg-neutral-800 text-white border border-white/30 hover:bg-neutral-700'
+                    : 'bg-white hover:bg-neutral-100 text-neutral-900 active:scale-95'
+                ]"
               >
-                Book this tour
+                <ShoppingBag :size="16" />
+                <span>{{ added ? 'Added to cart!' : inCart ? 'Update cart' : 'Add to cart' }}</span>
               </button>
 
-              <p class="text-slate-400 text-[11px] text-center leading-relaxed">
+              <p class="text-slate-400 text-[11px] text-center leading-relaxed font-mono">
                 Free cancellation up to 48 hrs before departure. Instant confirmation & secure payment.
               </p>
             </div>
@@ -213,9 +272,9 @@ useHead({
               </div>
               <div class="p-4">
                 <p class="text-white font-bold text-sm mb-2 group-hover:text-emerald-400 transition-colors line-clamp-1">{{ t.title }}</p>
-                <div class="flex items-center justify-between text-xs text-slate-400">
+                <div class="flex items-center justify-between text-xs text-slate-400 font-mono">
                   <span class="flex items-center gap-1"><Clock :size="12" />{{ t.duration }}</span>
-                  <span class="text-white font-bold font-mono text-sm">from ${{ t.price }}</span>
+                  <span class="text-white font-bold text-sm">from ${{ t.price }}</span>
                 </div>
               </div>
             </NuxtLink>

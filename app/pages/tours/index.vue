@@ -25,7 +25,7 @@ const filteredTours = computed(() => {
 })
 
 useHead({
-  title: 'All Guided Tours | GhidCultural'
+  title: 'All Guided Tours | GhidCult'
 })
 </script>
 
@@ -70,7 +70,7 @@ useHead({
       </div>
     </div>
 
-    <!-- Tours Grid -->
+    <!-- Tours -->
     <div class="py-16 px-6 sm:px-12 lg:px-16 max-w-[1440px] mx-auto">
       <div v-if="filteredTours.length === 0" class="text-white/40 text-base py-24 text-center">
         No tours match your search criteria.
@@ -82,9 +82,7 @@ useHead({
           :key="tour.id"
           class="group relative overflow-hidden bg-neutral-900/60 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl flex flex-col"
         >
-          <!-- Clickable Card Area -->
           <NuxtLink :to="`/tours/${tour.id}`" class="block flex-1 flex flex-col">
-            <!-- Image Container -->
             <div class="h-48 overflow-hidden relative">
               <img
                 :src="tour.img"
@@ -99,7 +97,6 @@ useHead({
               </span>
             </div>
 
-            <!-- Card Content Body -->
             <div class="p-5 flex flex-col gap-3 flex-1">
               <h3 class="text-white text-base font-bold leading-snug group-hover:text-emerald-400 transition-colors">
                 {{ tour.title }}
@@ -109,7 +106,7 @@ useHead({
                 {{ tour.shortDescription }}
               </p>
 
-              <!-- Tour Specs -->
+              <!-- Tour Specifications -->
               <div class="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-xs mt-auto pt-2">
                 <span class="flex items-center gap-1"><MapPin :size="12" />{{ tour.location }}</span>
                 <span class="flex items-center gap-1"><Clock :size="12" />{{ tour.duration }}</span>

@@ -13,7 +13,7 @@ const footerSections = [
     <div>
       <NuxtLink to="/" class="flex items-center gap-2 mb-3">
         <MapPin :size="16" class="text-emerald-400" />
-        <span class="font-bold text-white text-base">GhidCultural</span>
+        <span class="font-bold text-white text-base">GhidCult</span>
       </NuxtLink>
     </div>
 
@@ -32,7 +32,7 @@ const footerSections = [
     </div>
 
     <div class="self-start md:self-end text-xs text-white/30">
-      © 2026 GhidCultural. All rights reserved.
+      © 2026 GhidCult. All rights reserved.
     </div>
   </footer>
 </template>
