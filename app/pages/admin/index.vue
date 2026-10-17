@@ -1,68 +1,91 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { 
   TrendingUp, 
   Users, 
   Map, 
   FileText, 
   ArrowRight, 
-  ArrowUpRight, 
-  ArrowDownRight 
-} from 'lucide-vue-next'
-import { tours } from '~/data/tours'
-import { posts } from '~/data/blog'
-import { allBookings, topTours } from '~/data/admin'
+  ArrowUpRight 
+} from '@lucide/vue'
+import type { BookingRecord, BookingStatus } from '~/data/admin'
 
-// Apply the admin layout
 definePageMeta({
-  layout: 'admin'
+  layout: 'admin',
 })
 
-const stats = [
+useHead({
+  title: 'Admin Dashboard | GhidCult',
+})
+
+// Fetch data from API
+const [{ data: bookingsData }, { data: toursData }, { data: articlesData }] = await Promise.all([
+  useFetch<{ success: boolean; bookings: BookingRecord[] }>('/api/admin/bookings'),
+  useFetch<{ success: boolean; total: number; tours: any[] }>('/api/admin/tours'),
+  useFetch<{ success: boolean; total: number; articles: any[] }>('/api/admin/blog'),
+])
+
+const recentBookings = computed(() => (bookingsData.value?.bookings || []).slice(0, 10))
+const totalTours = computed(() => toursData.value?.tours?.length ?? 0)
+const totalArticles = computed(() => articlesData.value?.articles?.length ?? 0)
+
+// Calculate total revenue from confirmed or paid bookings
+const totalRevenue = computed(() => {
+  const bookings = bookingsData.value?.bookings || []
+  return bookings
+    .filter((b) => b.bookingStatus === 'CONFIRMED' || b.paymentStatus === 'PAID')
+    .reduce((sum, b) => sum + Number(b.totalPrice || 0), 0)
+})
+
+const stats = computed(() => [
   {
-    label: 'Revenue this month',
-    value: '$12,480',
-    delta: '+18%',
+    label: 'Total Revenue',
+    value: `${totalRevenue.value.toLocaleString()} Lei`,
+    delta: 'Live',
     up: true,
     icon: TrendingUp,
-    sub: 'vs. last month',
+    sub: 'confirmed bookings',
   },
   {
-    label: 'Bookings',
-    value: '94',
-    delta: '+12%',
+    label: 'Total Bookings',
+    value: String(bookingsData.value?.bookings?.length ?? 0),
+    delta: 'Live',
     up: true,
     icon: Users,
-    sub: 'this month',
+    sub: 'all time reservations',
   },
   {
     label: 'Active tours',
-    value: String(tours.length),
-    delta: '0%',
+    value: String(totalTours.value),
+    delta: 'Live',
     up: true,
     icon: Map,
     sub: 'currently listed',
   },
   {
     label: 'Blog posts',
-    value: String(posts.length),
-    delta: '+2',
+    value: String(totalArticles.value),
+    delta: 'Live',
     up: true,
     icon: FileText,
     sub: 'published',
   },
-]
+])
 
-const maxBookings = topTours[0]?.bookings ?? 1
-
-const statusStyle: Record<string, string> = {
-  confirmed: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-  pending: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
-  cancelled: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
+const statusStyle: Record<BookingStatus, string> = {
+  CONFIRMED: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
+  PENDING: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
+  CANCELLED: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
 }
 
-useHead({
-  title: 'Admin Dashboard | GhidCult'
-})
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+}
 </script>
 
 <template>
@@ -86,93 +109,75 @@ useHead({
           <component :is="s.icon" :size="16" class="text-white/30" />
         </div>
         <div>
-          <p class="text-3xl sm:text-4xl font-bold text-white leading-none mb-2 font-mono">{{ s.value }}</p>
+          <p class="text-2xl sm:text-3xl font-bold text-white leading-none mb-2 font-mono">{{ s.value }}</p>
           <div class="flex items-center gap-1.5 text-xs">
-            <ArrowUpRight v-if="s.up" :size="13" class="text-emerald-400" />
-            <ArrowDownRight v-else :size="13" class="text-rose-400" />
-            <span :class="s.up ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'">{{ s.delta }}</span>
+            <ArrowUpRight :size="13" class="text-emerald-400" />
+            <span class="text-emerald-400 font-bold">{{ s.delta }}</span>
             <span class="text-white/30">{{ s.sub }}</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6 items-start">
+    <!-- Recent Bookings Table -->
+    <div class="border border-white/10 rounded-xl bg-white/[0.01] overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+        <p class="text-sm font-bold text-white tracking-wide">Recent bookings</p>
+        <NuxtLink to="/admin/bookings" class="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
+          View all <ArrowRight :size="12" />
+        </NuxtLink>
+      </div>
 
-      <!-- Recent Bookings -->
-      <div class="border border-white/10 rounded-xl bg-white/[0.01] overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <p class="text-sm font-bold text-white tracking-wide">Recent bookings</p>
-          <NuxtLink to="/admin/bookings" class="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
-            View all <ArrowRight :size="12" />
-          </NuxtLink>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b border-white/5 bg-white/[0.02]">
-                <th 
-                  v-for="h in ['ID', 'Tour', 'Customer', 'Date', 'Persons', 'Total', 'Status']" 
-                  :key="h" 
-                  class="px-6 py-3 text-[10px] tracking-widest uppercase text-white/30 font-semibold whitespace-nowrap"
-                >
-                  {{ h }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-white/5">
-              <tr
-                v-for="b in allBookings"
-                :key="b.id"
-                class="hover:bg-white/[0.02] transition-colors text-xs"
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-white/5 bg-white/[0.02]">
+              <th 
+                v-for="h in ['Customer', 'Tour', 'Tour Date', 'Persons', 'Total', 'Status']" 
+                :key="h" 
+                class="px-6 py-3 text-[10px] tracking-widest uppercase text-white/30 font-semibold whitespace-nowrap"
               >
-                <td class="px-6 py-3.5 text-white/40 font-mono">{{ b.id }}</td>
-                <td class="px-6 py-3.5 text-white/80 font-medium whitespace-nowrap max-w-[180px] truncate">{{ b.tour }}</td>
-                <td class="px-6 py-3.5 text-white/60 whitespace-nowrap">{{ b.customer }}</td>
-                <td class="px-6 py-3.5 text-white/40 whitespace-nowrap">{{ b.date }}</td>
-                <td class="px-6 py-3.5 text-white/60 text-center">{{ b.persons }}</td>
-                <td class="px-6 py-3.5 text-white font-bold font-mono">${{ b.total }}</td>
-                <td class="px-6 py-3.5">
-                  <span :class="['text-[10px] tracking-wider uppercase border px-2 py-0.5 rounded', statusStyle[b.status]]">
-                    {{ b.status }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                {{ h }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr
+              v-for="b in recentBookings"
+              :key="b.id"
+              class="hover:bg-white/[0.02] transition-colors text-xs"
+            >
+              <td class="px-6 py-3.5 text-white/80 font-medium">
+                <div>{{ b.customerName }}</div>
+                <div class="text-[10px] text-white/30">{{ b.customerEmail }}</div>
+              </td>
+              <td class="px-6 py-3.5 text-white/70 max-w-[200px] truncate">
+                {{ b.tour?.title || 'Custom Tour' }}
+              </td>
+              <td class="px-6 py-3.5 text-white/40 whitespace-nowrap">
+                {{ formatDate(b.tourDate) }}
+              </td>
+              <td class="px-6 py-3.5 text-white/60 text-center font-mono">
+                {{ b.persons }}
+              </td>
+              <td class="px-6 py-3.5 text-white font-bold font-mono">
+                {{ b.totalPrice }} Lei
+              </td>
+              <td class="px-6 py-3.5">
+                <span :class="['text-[10px] tracking-wider uppercase border px-2 py-0.5 rounded font-mono', statusStyle[b.bookingStatus] || statusStyle.PENDING]">
+                  {{ b.bookingStatus }}
+                </span>
+              </td>
+            </tr>
+
+            <tr v-if="recentBookings.length === 0">
+              <td colspan="6" class="px-6 py-10 text-center text-white/30 text-xs">
+                No bookings recorded yet.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- Top Performing Tours -->
-      <div class="border border-white/10 rounded-xl bg-white/[0.01] overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <p class="text-sm font-bold text-white tracking-wide">Top tours</p>
-          <NuxtLink to="/admin/tours" class="flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
-            Manage <ArrowRight :size="12" />
-          </NuxtLink>
-        </div>
-
-        <div class="flex flex-col divide-y divide-white/5">
-          <div v-for="t in topTours" :key="t.title" class="px-6 py-4 flex flex-col gap-2">
-            <div class="flex items-start justify-between gap-3 text-xs">
-              <p class="text-white/80 font-medium leading-snug">{{ t.title }}</p>
-              <p class="font-bold text-white font-mono shrink-0">${{ t.revenue }}</p>
-            </div>
-            
-            <div class="flex items-center gap-3">
-              <div class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-emerald-400 rounded-full transition-all duration-500"
-                  :style="{ width: `${(t.bookings / maxBookings) * 100}%` }"
-                />
-              </div>
-              <span class="text-[11px] text-white/30 shrink-0 font-mono">{{ t.bookings }} bookings</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
   </div>

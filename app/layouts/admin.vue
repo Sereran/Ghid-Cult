@@ -12,10 +12,36 @@ import {
   ArrowUpRight,
   Settings,
   LogOut
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 
 const route = useRoute()
 const collapsed = ref(false)
+
+// Connect global auth state
+const { user, logout } = useAuth()
+
+// Calculate user initials and display name dynamically
+const userInitials = computed(() => {
+  const name = user.value?.fullName?.trim()
+  if (!name) return 'AD'
+
+  return name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w.charAt(0).toUpperCase())
+    .join('')
+})
+
+const displayName = computed(() => {
+  const name = user.value?.fullName?.trim()
+  if (!name) return 'Admin'
+
+  const parts = name.split(/\s+/)
+  const firstName = parts[0] ?? 'Admin'
+  const secondInitial = parts[1]?.charAt(0)
+
+  return secondInitial ? `${firstName} ${secondInitial}.` : firstName
+})
 
 const nav = [
   { label: 'Dashboard', to: '/admin', icon: LayoutGrid },
@@ -99,6 +125,7 @@ const currentSectionLabel = computed(() => {
         <!-- Sign Out -->
         <button
           type="button"
+          @click="logout"
           :title="collapsed ? 'Sign out' : undefined"
           class="flex items-center gap-3 px-3 py-2 text-white/40 hover:text-rose-400 hover:bg-rose-500/5 rounded-lg transition-colors w-full text-left text-xs"
         >
@@ -134,9 +161,9 @@ const currentSectionLabel = computed(() => {
         <!-- Profile Badge -->
         <div class="flex items-center gap-3">
           <div class="w-7 h-7 rounded-full border border-emerald-400/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-[11px] font-bold">
-            AI
+            {{ userInitials }}
           </div>
-          <span class="text-xs text-white/50">Adrian I.</span>
+          <span class="text-xs text-white/50">{{ displayName }}</span>
         </div>
       </header>
 

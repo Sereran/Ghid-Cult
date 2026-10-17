@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MapPin } from 'lucide-vue-next'
+import { MapPin } from '@lucide/vue'
 
 const footerSections = [
   { section: 'Explore', links: [{ label: 'Destinations', path: '/tours' }, { label: 'Guided Tours', path: '/tours' }, { label: 'Blog', path: '/blog' }] },

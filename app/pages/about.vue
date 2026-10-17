@@ -5,7 +5,7 @@ import {
   Globe, 
   Users, 
   Award 
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 
 const PORTRAIT = "https://images.unsplash.com/photo-1698270949479-5797ceee3efe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=900&q=80"
 const PORTRAIT_2 = "https://images.unsplash.com/photo-1582222186592-fb6306eab9b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=700&q=80"
@@ -240,7 +240,6 @@ useHead({
         </div>
 
         <div class="relative">
-          <!-- Timeline Line -->
           <div class="absolute left-[72px] top-0 bottom-0 w-px bg-white/10 hidden md:block" />
 
           <div class="flex flex-col">

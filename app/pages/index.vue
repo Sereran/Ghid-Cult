@@ -5,7 +5,7 @@ import {
   Users, 
   Star, 
   ArrowRight 
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 
 const destinations = [
   { 
@@ -157,7 +157,7 @@ const tours = [
         <NuxtLink
           v-for="tour in tours"
           :key="tour.title"
-          to="/tour-details"
+          to="/tours"
           class="group relative overflow-hidden bg-neutral-900/60 rounded-2xl block border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl"
         >
           <div class="h-64 overflow-hidden relative">

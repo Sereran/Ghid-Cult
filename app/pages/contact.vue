@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Phone, Mail, ArrowUpRight, MapPin } from 'lucide-vue-next'
+import { Phone, Mail, ArrowUpRight, MapPin } from '@lucide/vue'
 
 const PORTRAIT = "https://images.unsplash.com/photo-1698270949479-5797ceee3efe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80"
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Eye, EyeOff, MapPin, ArrowRight } from 'lucide-vue-next'
+import { Eye, EyeOff, MapPin, ArrowRight, Loader2, AlertCircle } from '@lucide/vue'
+
+const { login, register } = useAuth()
 
 const BG = "https://images.unsplash.com/photo-1782049075945-4014d719a4a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1400&q=80"
 
@@ -14,17 +16,44 @@ const email = ref('')
 const password = ref('')
 const confirm = ref('')
 
+const isLoading = ref(false)
+const errorMessage = ref('')
+
 const switchMode = (m: 'login' | 'register') => {
   mode.value = m
   showPass.value = false
   showConfirm.value = false
+  errorMessage.value = ''
 }
 
-const handleSubmit = () => {
-  if (mode.value === 'login') {
-    console.log('Logging in with:', { email: email.value, password: password.value })
-  } else {
-    console.log('Registering with:', { name: name.value, email: email.value, password: password.value, confirm: confirm.value })
+const handleSubmit = async () => {
+  errorMessage.value = ''
+  
+  if (mode.value === 'register' && password.value !== confirm.value) {
+    errorMessage.value = 'Passwords do not match.'
+    return
+  }
+
+  isLoading.value = true
+
+  try {
+    if (mode.value === 'login') {
+      await login({
+        email: email.value,
+        password: password.value,
+      })
+    } else {
+      await register({
+        fullName: name.value,
+        email: email.value,
+        password: password.value,
+        confirmPassword: confirm.value,
+      })
+    }
+  } catch (err: any) {
+    errorMessage.value = err.data?.statusMessage || err.message || 'An error occurred during authentication.'
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -36,7 +65,7 @@ useHead({
 <template>
   <div class="min-h-screen grid grid-cols-1 md:grid-cols-[1fr_520px]">
 
-    <!-- Panel -->
+    <!-- Brand Image Panel -->
     <div class="relative hidden md:flex flex-col justify-between overflow-hidden bg-[#030f0e]">
       <img
         :src="BG"
@@ -66,7 +95,7 @@ useHead({
       </div>
     </div>
 
-    <!-- Auth Form -->
+    <!-- Auth Form Container -->
     <div class="flex flex-col min-h-screen bg-[#030f0e] border-l border-white/10">
 
       <!-- Mobile Header Logo -->
@@ -118,6 +147,15 @@ useHead({
           </p>
         </div>
 
+        <!-- Error Notification Banner -->
+        <div 
+          v-if="errorMessage" 
+          class="mb-6 flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs"
+        >
+          <AlertCircle :size="16" class="shrink-0" />
+          <span>{{ errorMessage }}</span>
+        </div>
+
         <!-- Credentials Form -->
         <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
 
@@ -131,7 +169,8 @@ useHead({
               type="text"
               placeholder="Alexandru Popescu"
               required
-              class="w-full bg-neutral-900/60 border border-white/10 rounded-xl text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none focus:border-emerald-400 transition-colors"
+              :disabled="isLoading"
+              class="w-full bg-neutral-900/60 border border-white/10 rounded-xl text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none focus:border-emerald-400 transition-colors disabled:opacity-50"
             />
           </div>
 
@@ -145,7 +184,8 @@ useHead({
               type="email"
               placeholder="your@email.com"
               required
-              class="w-full bg-neutral-900/60 border border-white/10 rounded-xl text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none focus:border-emerald-400 transition-colors"
+              :disabled="isLoading"
+              class="w-full bg-neutral-900/60 border border-white/10 rounded-xl text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none focus:border-emerald-400 transition-colors disabled:opacity-50"
             />
           </div>
 
@@ -160,7 +200,8 @@ useHead({
                 :type="showPass ? 'text' : 'password'"
                 placeholder="••••••••••"
                 required
-                class="w-full bg-transparent text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none"
+                :disabled="isLoading"
+                class="w-full bg-transparent text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none disabled:opacity-50"
               />
               <button
                 type="button"
@@ -185,7 +226,8 @@ useHead({
                 :type="showConfirm ? 'text' : 'password'"
                 placeholder="••••••••••"
                 required
-                class="w-full bg-transparent text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none"
+                :disabled="isLoading"
+                class="w-full bg-transparent text-sm text-white placeholder:text-slate-600 px-4 py-3.5 outline-none disabled:opacity-50"
               />
               <button
                 type="button"
@@ -209,10 +251,14 @@ useHead({
           <!-- Submit Button -->
           <button
             type="submit"
-            class="mt-3 w-full flex items-center justify-center gap-2 bg-white hover:bg-neutral-100 text-neutral-950 text-sm font-bold py-3.5 rounded-full transition-all duration-200 shadow-xl hover:scale-[1.01] active:scale-98"
+            :disabled="isLoading"
+            class="mt-3 w-full flex items-center justify-center gap-2 bg-white hover:bg-neutral-100 text-neutral-950 text-sm font-bold py-3.5 rounded-full transition-all duration-200 shadow-xl hover:scale-[1.01] active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span>{{ mode === 'login' ? 'Sign in' : 'Create account' }}</span>
-            <ArrowRight :size="15" />
+            <Loader2 v-if="isLoading" :size="16" class="animate-spin text-neutral-950" />
+            <template v-else>
+              <span>{{ mode === 'login' ? 'Sign in' : 'Create account' }}</span>
+              <ArrowRight :size="15" />
+            </template>
           </button>
         </form>
 
@@ -227,7 +273,8 @@ useHead({
         <div>
           <button
             type="button"
-            class="w-full flex items-center justify-center gap-3 border border-white/10 hover:border-white/25 bg-neutral-900/40 hover:bg-neutral-900/80 text-slate-300 hover:text-white text-xs font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-sm"
+            :disabled="isLoading"
+            class="w-full flex items-center justify-center gap-3 border border-white/10 hover:border-white/25 bg-neutral-900/40 hover:bg-neutral-900/80 text-slate-300 hover:text-white text-xs font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-sm disabled:opacity-50"
           >
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ShoppingBag, X, Trash2, Minus, Plus } from 'lucide-vue-next'
-import { tours } from '~/data/tours'
+import { ShoppingBag, X, Trash2, Minus, Plus } from '@lucide/vue'
 
 const { items, isOpen, closeCart, updatePersons, removeFromCart } = useCart()
 
-// Map cart items with their tour metadata
+// Fetch published tours from database
+const { data: toursData } = await useFetch<{ success: boolean; tours: any[] }>('/api/tours')
+const allTours = computed(() => toursData.value?.tours || [])
+
+// Map cart items with tour metadata
 const cartDetails = computed(() => {
   return items.value
     .map((item) => {
-      const tour = tours.find((t) => t.id === item.tourId)
+      const tour = allTours.value.find((t: any) => t.id === item.tourId || t.slug === item.tourId)
       return {
         ...item,
-        tour
+        tour,
       }
     })
     .filter((entry) => entry.tour !== undefined)
@@ -21,7 +24,7 @@ const cartDetails = computed(() => {
 // Calculate subtotal
 const subtotal = computed(() => {
   return cartDetails.value.reduce((sum, entry) => {
-    return sum + (entry.tour?.price || 0) * entry.persons
+    return sum + Number(entry.tour?.price || 0) * entry.persons
   }, 0)
 })
 </script>
@@ -92,9 +95,10 @@ const subtotal = computed(() => {
           >
             <!-- Tour Thumbnail -->
             <img 
-              :src="item.tour?.img" 
+              :src="item.tour?.imageUrl" 
               :alt="item.tour?.title" 
-              class="w-16 h-16 rounded object-cover shrink-0 border border-white/10"
+              class="w-16 h-16 rounded object-cover shrink-0 border border-white/10 bg-white/5"
+              @error="(e: any) => e.target.style.display = 'none'"
             />
 
             <div class="flex-1 min-w-0">
@@ -104,7 +108,7 @@ const subtotal = computed(() => {
                   {{ item.tour?.title }}
                 </p>
                 <button 
-                  type="button"
+                  type="button" 
                   @click="removeFromCart(item.tourId)"
                   class="text-slate-500 hover:text-rose-400 transition-colors p-0.5"
                   title="Remove tour"
@@ -115,15 +119,15 @@ const subtotal = computed(() => {
 
               <!-- Location / Duration -->
               <p class="font-mono text-[11px] text-slate-400 mt-1">
-                {{ item.tour?.duration }} · {{ item.tour?.location }}, Romania
+                {{ item.tour?.duration }} · {{ item.tour?.location || 'Iași, Romania' }}
               </p>
 
               <!-- Counter and Price Calculation -->
               <div class="flex items-center justify-between mt-3">
                 <div class="flex items-center border border-white/15 bg-white/5 rounded">
-                  <button
-                    type="button"
-                    @click="updatePersons(item.tourId, item.persons - 1)"
+                  <button 
+                    type="button" 
+                    @click="updatePersons(item.tourId, item.persons - 1)" 
                     :disabled="item.persons <= 1"
                     class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-25 transition-colors"
                   >
@@ -132,9 +136,9 @@ const subtotal = computed(() => {
                   <span class="w-7 h-7 flex items-center justify-center font-mono font-bold text-xs text-white border-x border-white/15">
                     {{ item.persons }}
                   </span>
-                  <button
-                    type="button"
-                    @click="updatePersons(item.tourId, item.persons + 1)"
+                  <button 
+                    type="button" 
+                    @click="updatePersons(item.tourId, item.persons + 1)" 
                     class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
                   >
                     <Plus :size="11" />
@@ -144,10 +148,10 @@ const subtotal = computed(() => {
                 <!-- Price Breakdown -->
                 <div class="text-right">
                   <p class="font-mono text-[10px] text-slate-400">
-                    ${{ item.tour?.price }} × {{ item.persons }}
+                    {{ item.tour?.price }} Lei × {{ item.persons }}
                   </p>
                   <p class="font-mono font-bold text-sm text-white">
-                    ${{ (item.tour?.price || 0) * item.persons }}
+                    {{ Number(item.tour?.price || 0) * item.persons }} Lei
                   </p>
                 </div>
               </div>
@@ -159,23 +163,24 @@ const subtotal = computed(() => {
         <div class="p-6 border-t border-white/10 bg-[#020b0a]/90 space-y-4">
           <div class="flex justify-between items-baseline font-mono">
             <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Subtotal</span>
-            <span class="text-2xl font-bold text-white">${{ subtotal }}</span>
+            <span class="text-2xl font-bold text-white">{{ subtotal }} Lei</span>
           </div>
 
           <p class="font-mono text-[10px] text-slate-400 leading-tight">
             Taxes and fees calculated at checkout · Free cancellation 48h before
           </p>
 
-          <button
-            type="button"
+          <NuxtLink
+            to="/checkout"
             :disabled="cartDetails.length === 0"
-            class="w-full bg-white hover:bg-neutral-100 disabled:opacity-30 text-neutral-900 font-mono font-bold text-xs uppercase tracking-wider py-3.5 rounded-full transition-all duration-200 shadow-md active:scale-98"
+            @click="closeCart"
+            class="block text-center w-full bg-white hover:bg-neutral-100 disabled:opacity-30 text-neutral-900 font-mono font-bold text-xs uppercase tracking-wider py-3.5 rounded-full transition-all duration-200 shadow-md active:scale-98"
           >
             Proceed to checkout
-          </button>
+          </NuxtLink>
 
-          <button
-            type="button"
+          <button 
+            type="button" 
             @click="closeCart"
             class="w-full text-center font-mono text-xs text-slate-400 hover:text-white transition-colors pt-1"
           >
