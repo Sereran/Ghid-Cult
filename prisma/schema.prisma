@@ -1,0 +1,121 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum BookingStatus {
+  CONFIRMED
+  PENDING
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  REFUNDED
+}
+
+enum ArticleStatus {
+  PUBLISHED
+  DRAFT
+}
+
+model User {
+  id             String    @id @default(uuid())
+  username       String?   @unique
+  avatarUrl      String?
+  fullName       String
+  email          String    @unique
+  password       String
+  phone          String?
+  billingAddress String?
+  role           Role      @default(CUSTOMER)
+  createdAt      DateTime  @default(now())
+
+  bookings       Booking[]
+  articles       Article[]
+}
+
+model Tour {
+  id                String    @id @default(uuid())
+  slug              String    @unique
+  title             String
+  imageUrl          String
+  mainTag           String?
+  tags              String[]
+  shortDescription  String
+  fullDescription   String
+  location          String    @default("Iași, Romania")
+  meetingPlace      String
+  departureTime     String
+  itinerary         String[]
+  duration          String
+  maxPersons        Int       @default(12)
+  price             Decimal   @db.Decimal(10, 2)
+  rating            Decimal   @default(5.0) @db.Decimal(2, 1)
+  reviewsCount      Int       @default(0)
+  highlights        String[]
+  inclusions        String[]
+  exclusions        String[]
+  languages         String[]  @default(["English", "Romanian"])
+  specialConditions String?
+  isFeatured        Boolean   @default(false)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  bookings          Booking[]
+  articles          Article[]
+}
+
+model Booking {
+  id             String        @id @default(cuid())
+  tourId         String
+  userId         String?
+  customerName   String
+  customerEmail  String
+  customerPhone  String?
+  tourDate       DateTime
+  persons        Int           @default(1)
+  unitPrice      Decimal       @db.Decimal(10, 2)
+  totalPrice     Decimal       @db.Decimal(10, 2)
+  bookingStatus  BookingStatus @default(PENDING)
+  paymentStatus  PaymentStatus @default(UNPAID)
+  billingAddress String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  tour           Tour          @relation(fields: [tourId], references: [id], onDelete: Restrict)
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Article {
+  id               String        @id @default(uuid())
+  slug             String        @unique
+  title            String
+  category         String
+  imageUrl         String
+  videoUrl         String?
+  authorId         String?
+  tourId           String?
+  shortDescription String
+  content          String        @db.Text
+  quotes           String?
+  readTime         String        @default("5 min read")
+  isFeatured       Boolean       @default(false)
+  status           ArticleStatus @default(PUBLISHED)
+  publishedAt      DateTime      @default(now())
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  author           User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  tour             Tour?         @relation(fields: [tourId], references: [id], onDelete: SetNull)
+}
