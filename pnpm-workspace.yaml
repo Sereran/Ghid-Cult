@@ -1,2 +1,10 @@
 allowBuilds:
+  '@prisma/engines': false
   esbuild: false
+  prisma: false
+  workerd: false
+permissions:
+  dotenv:
+    skills: false
+  prisma:
+    skills: false
