@@ -54,6 +54,7 @@ export default defineEventHandler(async (event) => {
             Key: uniqueFilename,
             Body: file.data,
             ContentType: file.type || 'image/jpeg',
+            ACL: 'public-read',
         })
     )
 
