@@ -1,0 +1,163 @@
+{
+    "nav": {
+        "articles": "Articles",
+        "about": "About",
+        "contact": "Contact"
+    },
+    "meta": {
+        "title": "GhidCult | Iași Cultural Heritage & Chronicles",
+        "description": "Deep historical dives, architectural analyses, and cultural essays exploring the spirit and bohemian past of Iași."
+    },
+    "hero": {
+        "title": "Stone Speaks",
+        "subtitle": "Promoting the cultural heritage of Iași through inspirational workshops and discovery journeys",
+        "cta": "Explore the chronicles",
+        "aboutCta": "About the project"
+    },
+    "pillars": {
+        "archiveTagline": "The Archives",
+        "title": "Cultural Themes",
+        "items": {
+            "symbols": {
+                "title": "Symbolic Iași",
+                "description": "The journey of consciousness to discover identity and belonging: boyar coats of arms, civic emblems, and ecclesiastical shields."
+            },
+            "discover": {
+                "title": "Initiatic Iași",
+                "description": "Practicing principles and values within the guilds and communities of Iași."
+            },
+            "knowledge": {
+                "title": "Enlightenment Iași",
+                "description": "Stepping out of the darkness of ignorance through knowledge: in the footsteps of ancient printing houses, schools, and libraries."
+            },
+            "church": {
+                "title": "Esoteric Iași",
+                "description": "Processes of inner transformation while stepping through sacred space: the geography and sacred architecture of churches."
+            }
+        }
+    },
+    "featured": {
+        "label": "Featured Article",
+        "browseAll": "Browse all blogs",
+        "readFull": "Read article",
+        "by": "By {author}"
+    },
+    "recent": {
+        "label": "Latest Dispatches",
+        "title": "Recent Chronicles",
+        "viewAll": "View all posts",
+        "loading": "Retrieving cultural chronicles…",
+        "empty": "No articles published yet. Stay tuned.",
+        "readEntry": "Read article"
+    },
+    "blogPage": {
+        "metaTitle": "The Blog | GhidCult",
+        "title": "The Blog",
+        "subtitle": "Thoughts on Iași, on history, and on what it means to really know a place.",
+        "featuredLabel": "Featured article",
+        "readArticle": "Read article",
+        "read": "Read",
+        "postsCount": "{count} post(s)",
+        "allCategories": "All",
+        "loading": "Loading articles…",
+        "empty": "No published articles in this category yet.",
+        "newsletter": {
+            "tagline": "Never miss a post",
+            "title": "Get new writing by email",
+            "placeholder": "your{'@'}email.com",
+            "subscribe": "Subscribe"
+        }
+    },
+    "categories": {
+        "All": "All",
+        "Architecture": "Architecture",
+        "Literature": "Literature",
+        "History": "History",
+        "Culture": "Culture"
+    },
+    "articlePage": {
+        "notFound": "Article not found or has been unpublished.",
+        "backToBlog": "Back to blog",
+        "allPosts": "All posts",
+        "authorBio": "Guide and author at GhidCult. Writing about culture, heritage, and the architectural nuances of Iași.",
+        "sidebar": {
+            "category": "Category",
+            "published": "Published",
+            "readingTime": "Reading time",
+            "featuredTour": "Featured Tour",
+            "bookTour": "Book this tour ({price} Lei)",
+            "tourPromoText": "Interested in discovering Iași's historical landmarks in person? Join our guided weekend walking tours.",
+            "exploreTours": "Explore tours"
+        },
+        "suggestions": {
+            "tagline": "More reading",
+            "title": "You might also like"
+        }
+    },
+    "aboutPage": {
+        "metaTitle": "About Me | GhidCult",
+        "tagline": "About Me",
+        "name": {
+            "first": "Adrian",
+            "last": "Ilade"
+        },
+        "intro": "I am a trainer teaching people how to read stories of identity and belonging, principles and values, knowledge and art, written in stone on coats of arms, stuccoes, and facades.",
+        "credentials": [
+            "BA in Philosophy",
+            "Certified Trainer",
+            "Specialist in Public Speaking and Leadership"
+        ],
+        "quote": ".",
+        "quoteAuthor": "-",
+        "background": {
+            "tagline": "Background",
+            "paragraph1": ".",
+            "paragraph2": "."
+        },
+        "education": {
+            "tagline": "Education & training",
+            "items": [
+                {
+                    "year": "2000",
+                    "detail": "BA in Philosophy - Alexandru Ioan Cuza University of Iași"
+                },
+                {
+                    "year": "2014",
+                    "detail": "Certified Trainer - Ministry of Education, Research, Youth and Sports & Ministry of Labor"
+                },
+                {
+                    "year": "2015",
+                    "detail": "Public Speaking, Leadership, Train The Trainers - Iași, Romania"
+                }
+            ]
+        }
+    },
+    "contactPage": {
+        "metaTitle": "Contact | GhidCult",
+        "nameplate": {
+            "tagline": "Your contact",
+            "firstName": "Adrian",
+            "lastName": "Ilade",
+            "role": "Founder of GhidCult"
+        },
+        "hero": {
+            "tagline": "Get in touch",
+            "title": "Let's talk.",
+            "description": "Questions about something you read on the blog? Reach out directly via WhatsApp or email!"
+        },
+        "methods": {
+            "phoneLabel": "Phone & WhatsApp",
+            "phoneNote": "Available Mon–Sat, 09:00–19:00",
+            "emailLabel": "Email",
+            "emailNote": "Replies within 24 hours"
+        },
+        "copy": {
+            "copied": "Copied!",
+            "copyTitle": "Copy to clipboard"
+        },
+        "location": "Based in Iași, Romania",
+        "socials": {
+            "tagline": "Find me online"
+        }
+    }
+}

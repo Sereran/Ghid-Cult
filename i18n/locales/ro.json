@@ -1,0 +1,163 @@
+{
+    "nav": {
+        "articles": "Articole",
+        "about": "Despre",
+        "contact": "Contact"
+    },
+    "meta": {
+        "title": "GhidCult | Patrimoniul Cultural și Cronicile Iașului",
+        "description": "Incursuni istorice profunde, analize arhitecturale și eseuri culturale despre spiritul și trecutul boem al Iașului."
+    },
+    "hero": {
+        "title": "Piatra ne vorbeşte",
+        "subtitle": "Promovez patrimoniul cultural al Iaşului prin workshop-uri inspiraționale şi cǎlǎtorii de descoperire",
+        "cta": "Explorează cronicile",
+        "aboutCta": "Despre proiect"
+    },
+    "pillars": {
+        "archiveTagline": "Arhivele",
+        "title": "Teme Culturale",
+        "items": {
+            "symbols": {
+                "title": "Iaşul Simbolic",
+                "description": "Cǎlǎtoria conștiinței de descoperire a identitǎții și apartenenței : blazoanele boiereşti , stemele civice și scuturile ecleziastice."
+            },
+            "discover": {
+                "title": "Iaşul Inițiatic",
+                "description": "Practicarea principiilor și valorilor în breslele și comunitǎțile ieşene."
+            },
+            "knowledge": {
+                "title": "Iaşul Iluminist",
+                "description": "Ieșirea din negura neștiinței prin cunoaștere : pe urmele vechilor  tipografii , școli și biblioteci."
+            },
+            "church": {
+                "title": "Iașul Esoteric",
+                "description": "Procesele transformǎrilor interioare în pǎșirea  prin spațiul sacru : geografia și arhitectura sacrǎ a bisericilor."
+            }
+        }
+    },
+    "featured": {
+        "label": "Articol Recomandat",
+        "browseAll": "Răsfoiește toate articolele",
+        "readFull": "Citește articolul",
+        "by": "De {author}"
+    },
+    "recent": {
+        "label": "Ultimele Noutăți",
+        "title": "Cronici Recente",
+        "viewAll": "Vezi toate postările",
+        "loading": "Se preiau cronicile culturale…",
+        "empty": "Niciun articol publicat încă. Rămâi aproape.",
+        "readEntry": "Citește articolul"
+    },
+    "blogPage": {
+        "metaTitle": "Blogul | GhidCult",
+        "title": "Blogul",
+        "subtitle": "Gânduri despre Iași, despre istorie și despre ce înseamnă să cunoști cu adevărat un loc.",
+        "featuredLabel": "Articol recomandat",
+        "readArticle": "Citește articolul",
+        "read": "Citește",
+        "postsCount": "{count} articol(e)",
+        "allCategories": "Toate",
+        "loading": "Se încarcă articolele…",
+        "empty": "Niciun articol publicat în această categorie deocamdată.",
+        "newsletter": {
+            "tagline": "Nu rata nicio postare",
+            "title": "Primește ultimele articole pe e-mail",
+            "placeholder": "adresa{'@'}ta.com",
+            "subscribe": "Abonați-vă"
+        }
+    },
+    "categories": {
+        "All": "Toate",
+        "Architecture": "Arhitectură",
+        "Literature": "Literatură",
+        "History": "Istorie",
+        "Culture": "Cultură"
+    },
+    "articlePage": {
+        "notFound": "Articolul nu a fost găsit sau a fost dezactivat.",
+        "backToBlog": "Înapoi la blog",
+        "allPosts": "Toate articolele",
+        "authorBio": "Ghid și autor în cadrul GhidCult. Scrie despre cultură, patrimoniu și nuanțele arhitecturale ale Iașului.",
+        "sidebar": {
+            "category": "Categorie",
+            "published": "Publicat",
+            "readingTime": "Timp de citire",
+            "featuredTour": "Tur Recomandat",
+            "bookTour": "Rezervă turul ({price} Lei)",
+            "tourPromoText": "Vrei să descoperi personal monumentele istorice ale Iașului? Alătură-te tururilor noastre ghidate de weekend.",
+            "exploreTours": "Explorează tururile"
+        },
+        "suggestions": {
+            "tagline": "Alte lecturi",
+            "title": "S-ar putea să-ți placă și"
+        }
+    },
+    "aboutPage": {
+        "metaTitle": "Despre Mine | GhidCult",
+        "tagline": "Despre Mine",
+        "name": {
+            "first": "Adrian",
+            "last": "Ilade"
+        },
+        "intro": "Sunt un formator care învațǎ oamenii cum sǎ citeascǎ poveștile despre identitate și apartenențǎ , principii și valori , cunoaștere și artǎ , ce sunt scrise în piatrǎ pe blazoane , stucaturi și fațade.",
+        "credentials": [
+            "Licențiat în Filosofie",
+            "Certificat Formator",
+            "Specialist în Public Speaking și Leadership"
+        ],
+        "quote": ".",
+        "quoteAuthor": "-",
+        "background": {
+            "tagline": "Trecut & Experiență",
+            "paragraph1": ".",
+            "paragraph2": "."
+        },
+        "education": {
+            "tagline": "Educație & Formare",
+            "items": [
+                {
+                    "year": "2000",
+                    "detail": "Licențiat în Filosofie - Universitatea „Alexandru Ioan Cuza” din Iași"
+                },
+                {
+                    "year": "2014",
+                    "detail": "Certificat Formator - Ministerul Educaţiei, Cercetării, Tineretului şi Sportului şi Ministerul Muncii"
+                },
+                {
+                    "year": "2015",
+                    "detail": "Public Speaking, Leadership, Train The Trainers - Iași, România"
+                }
+            ]
+        }
+    },
+    "contactPage": {
+        "metaTitle": "Contact | GhidCult",
+        "nameplate": {
+            "tagline": "Contactul tău",
+            "firstName": "Adrian",
+            "lastName": "Ilade",
+            "role": "Fondator GhidCult"
+        },
+        "hero": {
+            "tagline": "Intră în legătură",
+            "title": "Hai să vorbim.",
+            "description": "Ai întrebări despre ceva ce ai citit pe blog? Contactează-mă direct pe WhatsApp sau prin e-mail!"
+        },
+        "methods": {
+            "phoneLabel": "Telefon & WhatsApp",
+            "phoneNote": "Disponibil Luni–Sâmbătă, 09:00–19:00",
+            "emailLabel": "E-mail",
+            "emailNote": "Răspuns în maxim 24 de ore"
+        },
+        "copy": {
+            "copied": "Copiat!",
+            "copyTitle": "Copiază în clipboard"
+        },
+        "location": "Localizat în Iași, România",
+        "socials": {
+            "tagline": "Găsește-mă online"
+        }
+    }
+}
