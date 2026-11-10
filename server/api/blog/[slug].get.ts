@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
                 select: {
                     fullName: true,
                     email: true,
+                    avatarUrl: true,
                 },
             },
             tour: {

@@ -1,5 +1,16 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+
+const s3Client = new S3Client({
+    endpoint: process.env.ENDPOINT,
+    region: process.env.REGION || 'eu-west-1',
+    credentials: {
+        accessKeyId: process.env.ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.SECRET_ACCESS_KEY || '',
+    },
+    forcePathStyle: true,
+})
 
 export default defineEventHandler(async (event) => {
     requireAdmin(event)
@@ -22,21 +33,35 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    // Ensure target folder exists
-    const uploadDir = path.resolve(process.cwd(), 'public/uploads')
-    await fs.mkdir(uploadDir, { recursive: true })
+    const bucketName = process.env.RAILWAY_BUCKET_NAME
+    const endpoint = process.env.ENDPOINT
 
-    // Clean filename and make it unique with a timestamp
+    if (!bucketName || !endpoint) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Railway Bucket environment variables are not configured.',
+        })
+    }
+
+    // Clean filename and make it unique
     const sanitizedName = file.filename.replace(/[^\w.-]/g, '_').toLowerCase()
-    const uniqueFilename = `${Date.now()}-${sanitizedName}`
-    const filePath = path.join(uploadDir, uniqueFilename)
+    const uniqueFilename = `uploads/${Date.now()}-${sanitizedName}`
 
-    // Save buffer to disk
-    await fs.writeFile(filePath, file.data)
+    // Upload binary data to Bucket
+    await s3Client.send(
+        new PutObjectCommand({
+            Bucket: bucketName,
+            Key: uniqueFilename,
+            Body: file.data,
+            ContentType: file.type || 'image/jpeg',
+        })
+    )
 
-    // Return the public web path
+    // Build the public web URL
+    const publicUrl = `${endpoint}/${bucketName}/${uniqueFilename}`
+
     return {
         success: true,
-        url: `/uploads/${uniqueFilename}`,
+        url: publicUrl,
     }
 })

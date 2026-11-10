@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
             username: true,
             email: true,
             phone: true,
+            avatarUrl: true,
             role: true,
             createdAt: true,
             bookings: {
