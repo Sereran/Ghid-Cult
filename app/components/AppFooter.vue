@@ -2,7 +2,7 @@
 import { MapPin } from '@lucide/vue'
 
 const footerSections = [
-  { section: 'Explore', links: [{ label: 'Destinations', path: '/tours' }, { label: 'Guided Tours', path: '/tours' }, { label: 'Blog', path: '/blog' }] },
+  { section: 'Explore', links: [{ label: 'Blog', path: '/blog' }] },
   { section: 'Info', links: [{ label: 'About', path: '/about' }] },
   { section: 'Support', links: [{ label: 'Contact', path: '/contact' }] },
 ]

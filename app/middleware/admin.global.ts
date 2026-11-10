@@ -1,23 +1,18 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-    if (to.path === '/admin' || to.path.startsWith('/admin/')) {
-        const { user, fetchUser, isAdmin } = useAuth()
+    const { user, fetchUser, isAdmin } = useAuth()
 
-        // Fetch the user if not already fetched
-        if (!user.value) {
-            await fetchUser()
-        }
+    // Ensure current session is retrieved from cookie
+    if (!user.value) {
+        await fetchUser()
+    }
 
-        console.log('[AdminGuard] User:', user.value)
-        console.log('[AdminGuard] Role:', user.value?.role)
-        console.log('[AdminGuard] isAdmin:', isAdmin.value)
+    // If already logged in as ADMIN and hitting /admin, allow through
+    if (to.path === '/admin') {
+        return
+    }
 
-        // Redirect customers or unauthenticated users to the homepage
-        if (!isAdmin.value || !isAdmin.value) {
-            console.log('[AdminGuard] Access Denied -> Redirecting to /')
-            return navigateTo('/', { replace: true })
-        }
-
-        console.log('[AdminGuard] Access Granted!')
-
+    // Protect all sub-routes (/admin/blog, /admin/users, /admin/blog/create, etc.)
+    if (to.path.startsWith('/admin/') && !isAdmin.value) {
+        return navigateTo('/admin')
     }
 })

@@ -2,8 +2,6 @@
 import { ref, computed } from 'vue'
 import {
   LayoutGrid,
-  Map,
-  CalendarDays,
   FileText,
   Users,
   ChevronLeft,
@@ -43,10 +41,9 @@ const displayName = computed(() => {
   return secondInitial ? `${firstName} ${secondInitial}.` : firstName
 })
 
+// Only keep Dashboard, Blog, and Users
 const nav = [
   { label: 'Dashboard', to: '/admin', icon: LayoutGrid },
-  { label: 'Tours', to: '/admin/tours', icon: Map },
-  { label: 'Bookings', to: '/admin/bookings', icon: CalendarDays },
   { label: 'Blog', to: '/admin/blog', icon: FileText },
   { label: 'Users', to: '/admin/users', icon: Users },
 ]
@@ -160,8 +157,15 @@ const currentSectionLabel = computed(() => {
 
         <!-- Profile Badge -->
         <div class="flex items-center gap-3">
-          <div class="w-7 h-7 rounded-full border border-emerald-400/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-[11px] font-bold">
-            {{ userInitials }}
+          <div class="w-7 h-7 rounded-full border border-emerald-400/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-[11px] font-bold overflow-hidden">
+            <img 
+              v-if="user?.avatarUrl" 
+              :src="user.avatarUrl" 
+              :alt="displayName" 
+              class="w-full h-full object-cover"
+              @error="(e: any) => e.target.style.display = 'none'"
+            />
+            <span v-else>{{ userInitials }}</span>
           </div>
           <span class="text-xs text-white/50">{{ displayName }}</span>
         </div>

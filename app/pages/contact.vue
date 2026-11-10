@@ -1,30 +1,36 @@
 <script setup lang="ts">
-import { Phone, Mail, ArrowUpRight, MapPin } from '@lucide/vue'
+import { ref, computed } from 'vue'
+import { Phone, Mail, ArrowUpRight, MapPin, Check, Copy } from '@lucide/vue'
 
-const PORTRAIT = "https://images.unsplash.com/photo-1698270949479-5797ceee3efe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80"
+const PORTRAIT = "/images/portrait.jpeg"
+const { t } = useI18n()
 
-const methods = [
+useHead({
+  title: computed(() => t('contactPage.metaTitle'))
+})
+
+const methods = computed(() => [
   {
     icon: Phone,
-    label: "Phone & WhatsApp",
+    label: t('contactPage.methods.phoneLabel'),
     value: "+40 741 658 289",
-    note: "Available Mon–Sat, 09:00–19:00",
+    note: t('contactPage.methods.phoneNote'),
     href: "tel:+40741658289",
     badge: "WhatsApp",
   },
   {
     icon: Mail,
-    label: "Email",
+    label: t('contactPage.methods.emailLabel'),
     value: "adrian.ilade@ghidcult.com",
-    note: "Replies within 24 hours",
+    note: t('contactPage.methods.emailNote'),
     href: "mailto:adrian.ilade@ghidcult.com",
     badge: null,
   },
-]
+])
 
 const copiedValue = ref<string | null>(null)
 
-  const copyToClipboard = async (text: string, e: Event) => {
+const copyToClipboard = async (text: string, e: Event) => {
   e.preventDefault() // Prevents opening tel or mailto links when copying
   e.stopPropagation()
   try {
@@ -37,14 +43,10 @@ const copiedValue = ref<string | null>(null)
     console.error('Failed to copy text: ', err)
   }
 }
-
-useHead({
-  title: 'Contact | GhidCult'
-})
 </script>
 
 <template>
-  <div class="pt-[72px] min-h-screen flex flex-col justify-between">
+  <div class="pt-[72px] min-h-screen flex flex-col justify-between text-slate-100 selection:bg-emerald-500 selection:text-white">
 
     <div class="grid grid-cols-1 md:grid-cols-2 flex-1">
 
@@ -54,20 +56,21 @@ useHead({
           :src="PORTRAIT"
           alt="Adrian Ilade"
           class="absolute inset-0 w-full h-full object-cover object-top opacity-50"
+          @error="(e: any) => e.target.style.display = 'none'"
         />
         <div class="absolute inset-0 bg-gradient-to-t from-[#030f0e] via-transparent to-transparent" />
         <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#030f0e] hidden md:block" />
 
         <!-- Nameplate -->
         <div class="absolute bottom-10 left-8 sm:left-12 md:left-16 right-8">
-          <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-2">
-            Your contact
+          <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-2 font-mono">
+            {{ $t('contactPage.nameplate.tagline') }}
           </p>
           <p class="text-3xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight">
-            Adrian<br />Ilade
+            {{ $t('contactPage.nameplate.firstName') }}<br />{{ $t('contactPage.nameplate.lastName') }}
           </p>
-          <p class="text-xs sm:text-sm text-slate-400 mt-2">
-            Founder &amp; Lead Guide, GhidCult
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 font-mono">
+            {{ $t('contactPage.nameplate.role') }}
           </p>
         </div>
       </div>
@@ -76,14 +79,14 @@ useHead({
       <div class="flex flex-col justify-center px-8 sm:px-12 md:px-16 py-16 sm:py-20 relative bg-[#030f0e]">
         <div class="absolute left-0 top-[15%] bottom-[15%] w-px bg-white/10 hidden md:block" />
 
-        <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-5">
-          Get in touch
+        <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-5 font-mono">
+          {{ $t('contactPage.hero.tagline') }}
         </p>
         <h1 class="text-5xl sm:text-6xl font-extrabold text-white leading-[0.95] mb-4 tracking-tight">
-          Let's talk.
+          {{ $t('contactPage.hero.title') }}
         </h1>
-        <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-[420px] mb-12">
-          Questions about a tour, group bookings, or something you read on the blog — reach out directly. No contact forms. No bots.
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-[420px] mb-12 font-light">
+          {{ $t('contactPage.hero.description') }}
         </p>
 
         <!-- Methods with Copy Action -->
@@ -104,7 +107,7 @@ useHead({
             
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 mb-1">
-                <p class="text-[11px] tracking-[0.15em] uppercase text-slate-400 font-medium">{{ m.label }}</p>
+                <p class="text-[11px] tracking-[0.15em] uppercase text-slate-400 font-medium font-mono">{{ m.label }}</p>
                 <span 
                   v-if="m.badge" 
                   class="text-[9px] tracking-widest uppercase border border-emerald-500/40 text-emerald-400 font-mono px-2 py-0.5 rounded-full"
@@ -127,7 +130,7 @@ useHead({
                   type="button"
                   @click="(e) => copyToClipboard(m.value, e)"
                   class="text-slate-400 hover:text-white p-1 rounded-md hover:bg-white/10 transition-colors"
-                  :title="copiedValue === m.value ? 'Copied!' : 'Copy to clipboard'"
+                  :title="copiedValue === m.value ? t('contactPage.copy.copied') : t('contactPage.copy.copyTitle')"
                 >
                   <Check v-if="copiedValue === m.value" :size="14" class="text-emerald-400" />
                   <Copy v-else :size="14" />
@@ -137,11 +140,11 @@ useHead({
                   v-if="copiedValue === m.value" 
                   class="text-[11px] font-mono text-emerald-400 font-semibold animate-pulse"
                 >
-                  Copied!
+                  {{ $t('contactPage.copy.copied') }}
                 </span>
               </div>
 
-              <p class="text-xs text-slate-400 mt-1">{{ m.note }}</p>
+              <p class="text-xs text-slate-400 mt-1 font-light">{{ m.note }}</p>
             </div>
 
             <!-- Direct Action Link -->
@@ -158,9 +161,8 @@ useHead({
         <!-- Location Footnote -->
         <div class="flex items-start gap-3 mt-8 px-1">
           <MapPin :size="15" class="text-emerald-400 shrink-0 mt-0.5" />
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Based in Iași, Romania. Tours operate city-wide.<br />
-            In-person meetings by appointment only.
+          <p class="text-xs text-slate-400 leading-relaxed font-mono">
+            {{ $t('contactPage.location') }}
           </p>
         </div>
       </div>
@@ -170,8 +172,8 @@ useHead({
     <!-- Socials -->
     <div class="border-t border-white/10 bg-neutral-950/40">
       <div class="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-12">
-        <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-6">
-          Find me online
+        <p class="text-[11px] tracking-[0.25em] uppercase text-emerald-400 font-semibold mb-6 font-mono">
+          {{ $t('contactPage.socials.tagline') }}
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -189,7 +191,7 @@ useHead({
             </div>
             <div class="min-w-0">
               <p class="text-white text-sm font-bold group-hover:text-emerald-400 transition-colors">LinkedIn</p>
-              <p class="text-slate-400 text-xs truncate">Ghid Cult</p>
+              <p class="text-slate-400 text-xs truncate font-mono">Ghid Cult</p>
             </div>
             <ArrowUpRight :size="14" class="text-slate-600 group-hover:text-white transition-colors ml-auto shrink-0" />
           </a>
@@ -199,16 +201,16 @@ useHead({
             href="https://www.tiktok.com/@adrianilade"
             target="_blank"
             rel="noopener noreferrer"
-           class="group flex items-center gap-4 border border-white/10 hover:border-white/20 bg-neutral-900/40 p-4 rounded-xl transition-all duration-200"
+            class="group flex items-center gap-4 border border-white/10 hover:border-white/20 bg-neutral-900/40 p-4 rounded-xl transition-all duration-200"
           >
             <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity shrink-0">
-                <svg class="w-5 h-5 fill-current text-white group-hover:text-[#25F4EE] transition-colors" viewBox="0 0 24 24">
-                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.77 1.81-.02 3.32-1.44 3.44-3.25.07-2.18.03-4.37.04-6.55V0h-.01c-.16.02-.32.02-.48.02z"/>
-                </svg>
+              <svg class="w-5 h-5 fill-current text-white group-hover:text-[#25F4EE] transition-colors" viewBox="0 0 24 24">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.77 1.81-.02 3.32-1.44 3.44-3.25.07-2.18.03-4.37.04-6.55V0h-.01c-.16.02-.32.02-.48.02z"/>
+              </svg>
             </div>
             <div class="min-w-0">
-                <p class="text-white text-sm font-bold group-hover:text-emerald-400 transition-colors">TikTok</p>
-                <p class="text-slate-400 text-xs truncate">@adrianilade</p>
+              <p class="text-white text-sm font-bold group-hover:text-emerald-400 transition-colors">TikTok</p>
+              <p class="text-slate-400 text-xs truncate font-mono">@adrianilade</p>
             </div>
             <ArrowUpRight :size="14" class="text-slate-600 group-hover:text-white transition-colors ml-auto shrink-0" />
           </a>
@@ -227,26 +229,30 @@ useHead({
             </div>
             <div class="min-w-0">
               <p class="text-white text-sm font-bold group-hover:text-emerald-400 transition-colors">YouTube</p>
-              <p class="text-slate-400 text-xs truncate">Ghid Cult</p>
+              <p class="text-slate-400 text-xs truncate font-mono">Ghid Cult</p>
+            </div>
+            <ArrowUpRight :size="14" class="text-slate-600 group-hover:text-white transition-colors ml-auto shrink-0" />
+          </a>
+
+          <!-- Facebook -->
+          <a
+            href="https://www.facebook.com/adrian.ilade"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 border border-white/10 hover:border-white/20 bg-neutral-900/40 p-4 rounded-xl transition-all duration-200"
+          >
+            <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity shrink-0">
+              <svg class="w-5 h-5 fill-current text-white group-hover:text-[#1877F2] transition-colors" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-white text-sm font-bold group-hover:text-emerald-400 transition-colors">Facebook</p>
+              <p class="text-slate-400 text-xs truncate font-mono">Adrian Ilade</p>
             </div>
             <ArrowUpRight :size="14" class="text-slate-600 group-hover:text-white transition-colors ml-auto shrink-0" />
           </a>
         </div>
-      </div>
-    </div>
-
-    <!-- Tours -->
-    <div class="border-t border-white/10 bg-[#030f0e]">
-      <div class="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <p class="text-xs sm:text-sm text-slate-400 max-w-[440px] leading-relaxed">
-          Ready to book without the back-and-forth? Browse available tours and reserve a spot directly.
-        </p>
-        <NuxtLink
-          to="/tours"
-          class="bg-white hover:bg-neutral-100 text-neutral-900 text-sm font-bold px-8 py-3.5 rounded-full transition-all duration-200 shadow-md hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
-        >
-          Browse tours
-        </NuxtLink>
       </div>
     </div>
 

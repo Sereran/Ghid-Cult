@@ -5,6 +5,7 @@ export interface AuthUser {
     email: string
     role: 'CUSTOMER' | 'ADMIN'
     phone?: string | null
+    avatarUrl?: string | null
     createdAt?: string
     bookings?: any[]
 }
