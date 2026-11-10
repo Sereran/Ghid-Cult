@@ -2,7 +2,10 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
-const s3Client = new S3Client({
+export default defineEventHandler(async (event) => {
+    requireAdmin(event)
+
+    const s3Client = new S3Client({
     endpoint: process.env.ENDPOINT,
     region: process.env.REGION || 'eu-west-1',
     credentials: {
@@ -10,10 +13,7 @@ const s3Client = new S3Client({
         secretAccessKey: process.env.SECRET_ACCESS_KEY || '',
     },
     forcePathStyle: true,
-})
-
-export default defineEventHandler(async (event) => {
-    requireAdmin(event)
+    })
 
     // Read multipart form data
     const form = await readMultipartFormData(event)
