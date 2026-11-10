@@ -70,10 +70,10 @@
     },
     "categories": {
         "All": "Toate",
-        "Architecture": "Arhitectură",
-        "Literature": "Literatură",
-        "History": "Istorie",
-        "Culture": "Cultură"
+        "Symbolic Iași": "Iaşul Simbolic",
+        "Initiatic Iași": "Iaşul Inițiatic",
+        "Enlightenment Iași": "Iaşul Iluminist",
+        "Esoteric Iași": "Iașul Esoteric"
     },
     "articlePage": {
         "notFound": "Articolul nu a fost găsit sau a fost dezactivat.",

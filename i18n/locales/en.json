@@ -70,10 +70,10 @@
     },
     "categories": {
         "All": "All",
-        "Architecture": "Architecture",
-        "Literature": "Literature",
-        "History": "History",
-        "Culture": "Culture"
+        "Symbolic Iași": "Symbolic Iași",
+        "Initiatic Iași": "Initiatic Iași",
+        "Enlightenment Iași": "Enlightenment Iași",
+        "Esoteric Iași": "Esoteric Iași"
     },
     "articlePage": {
         "notFound": "Article not found or has been unpublished.",
