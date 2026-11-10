@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "prisma migrate deploy && nuxt build",
+    "build": "prisma generate && nuxt build",
+    "start": "prisma migrate deploy && node .output/server/index.mjs",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
