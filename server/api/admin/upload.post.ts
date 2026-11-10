@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
     )
 
     // Build the public web URL
-    const publicUrl = `${endpoint}/${bucketName}/${uniqueFilename}`
+    const publicUrl = `/api/images/${uniqueFilename}`
 
     return {
         success: true,
