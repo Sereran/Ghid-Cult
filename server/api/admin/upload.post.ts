@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const bucketName = process.env.RAILWAY_BUCKET_NAME
+    const bucketName = process.env.BUCKET
     const endpoint = process.env.ENDPOINT
 
     if (!bucketName || !endpoint) {
