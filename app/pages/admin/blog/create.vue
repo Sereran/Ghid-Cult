@@ -19,7 +19,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const form = reactive({
   title: '',
   slug: '',
-  category: 'History',
+  category: 'Symbolic Iași',
   imageUrl: '',
   shortDescription: '',
   tourId: '',

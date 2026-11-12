@@ -130,7 +130,7 @@ const formatDate = (dateStr?: string | null) => {
 </script>
 
 <template>
-  <!-- 1. AUTHENTICATED ADMIN: Render full layout & dashboard -->
+  <!-- AUTHENTICATED ADMIN: Layout and Dashboard -->
   <NuxtLayout v-if="isAuthenticated && isAdmin" name="admin">
     <div class="flex flex-col gap-8 max-w-[1200px]">
       <div>
@@ -226,7 +226,7 @@ const formatDate = (dateStr?: string | null) => {
     </div>
   </NuxtLayout>
 
-  <!-- 2. UNAUTHENTICATED: Show Login Card directly on /admin -->
+  <!-- UNAUTHENTICATED: Show Login Card directly on /admin -->
   <div v-else class="min-h-screen bg-[#020b0a] flex items-center justify-center p-6 text-white font-mono">
     <div class="w-full max-w-[420px] border border-white/10 bg-[#0d1413] rounded-2xl p-8 flex flex-col gap-6 shadow-2xl">
       <div class="text-center">

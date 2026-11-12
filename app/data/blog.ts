@@ -47,8 +47,8 @@ export interface CreateArticleInput {
 }
 
 export const BLOG_CATEGORIES = [
-    'History',
-    'Architecture',
-    'Culture',
-    'Guides & Tips'
+    'Symbolic Iași',
+    'Initiatic Iași',
+    'Enlightenment Iași',
+    'Esoteric Iași'
 ] as const

@@ -165,7 +165,7 @@ useHead({
             </div>
 
             <!-- Linked Tour -->
-            <div v-if="currentPost.tour" class="border border-emerald-500/30 bg-[#021311] rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
+            <!-- <div v-if="currentPost.tour" class="border border-emerald-500/30 bg-[#021311] rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
               <div class="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider font-mono">
                 <MapPin :size="14" />
                 <span>{{ $t('articlePage.sidebar.featuredTour') }}</span>
@@ -180,10 +180,10 @@ useHead({
               >
                 {{ $t('articlePage.sidebar.bookTour', { price: currentPost.tour.price }) }} <ArrowRight :size="14" />
               </NuxtLink>
-            </div>
+            </div> -->
 
             <!-- Tour Promotion -->
-            <div v-else class="border border-white/10 bg-neutral-900/80 rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
+            <!-- <div v-else class="border border-white/10 bg-neutral-900/80 rounded-2xl p-6 flex flex-col gap-4 shadow-xl">
               <p class="text-xs text-slate-300 leading-relaxed font-light">
                 {{ $t('articlePage.sidebar.tourPromoText') }}
               </p>
@@ -193,7 +193,7 @@ useHead({
               >
                 {{ $t('articlePage.sidebar.exploreTours') }} <ArrowRight :size="14" />
               </NuxtLink>
-            </div>
+            </div> -->
           </aside>
         </div>
 

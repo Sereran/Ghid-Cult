@@ -70,16 +70,16 @@
     },
     "categories": {
         "All": "All",
-        "Architecture": "Architecture",
-        "Literature": "Literature",
-        "History": "History",
-        "Culture": "Culture"
+        "Symbolic Iași": "Symbolic Iași",
+        "Initiatic Iași": "Initiatic Iași",
+        "Enlightenment Iași": "Enlightenment Iași",
+        "Esoteric Iași": "Esoteric Iași"
     },
     "articlePage": {
         "notFound": "Article not found or has been unpublished.",
         "backToBlog": "Back to blog",
         "allPosts": "All posts",
-        "authorBio": "Guide and author at GhidCult. Writing about culture, heritage, and the architectural nuances of Iași.",
+        "authorBio": "Author",
         "sidebar": {
             "category": "Category",
             "published": "Published",
@@ -119,7 +119,7 @@
             "items": [
                 {
                     "year": "2000",
-                    "detail": "BA in Philosophy - Alexandru Ioan Cuza University of Iași"
+                    "detail": "Faculty of Philosophy - Alexandru Ioan Cuza University of Iași"
                 },
                 {
                     "year": "2014",

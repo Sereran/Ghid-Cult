@@ -48,17 +48,17 @@ const recentChronicles = computed(() => {
 // Cultural Focus Pillars of Iași
 const pillars = computed(() => [
   {
-    id: 'discover',
-    title: t('pillars.items.discover.title'),
-    description: t('pillars.items.discover.description'),
-    icon: Scroll,
-    image: 'images/stema-iasi.jpg',
-  },
-  {
     id: 'symbols',
     title: t('pillars.items.symbols.title'),
     description: t('pillars.items.symbols.description'),
     icon: Hammer,
+    image: 'images/stema-iasi.jpg',
+  },
+  {
+    id: 'discover',
+    title: t('pillars.items.discover.title'),
+    description: t('pillars.items.discover.description'),
+    icon: Scroll,
     image: 'images/posta-iasi.png',
   },
   {

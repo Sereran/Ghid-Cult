@@ -70,16 +70,16 @@
     },
     "categories": {
         "All": "Toate",
-        "Architecture": "Arhitectură",
-        "Literature": "Literatură",
-        "History": "Istorie",
-        "Culture": "Cultură"
+        "Symbolic Iași": "Iaşul Simbolic",
+        "Initiatic Iași": "Iaşul Inițiatic",
+        "Enlightenment Iași": "Iaşul Iluminist",
+        "Esoteric Iași": "Iașul Esoteric"
     },
     "articlePage": {
         "notFound": "Articolul nu a fost găsit sau a fost dezactivat.",
         "backToBlog": "Înapoi la blog",
         "allPosts": "Toate articolele",
-        "authorBio": "Ghid și autor în cadrul GhidCult. Scrie despre cultură, patrimoniu și nuanțele arhitecturale ale Iașului.",
+        "authorBio": "Autor",
         "sidebar": {
             "category": "Categorie",
             "published": "Publicat",
@@ -119,7 +119,7 @@
             "items": [
                 {
                     "year": "2000",
-                    "detail": "Licențiat în Filosofie - Universitatea „Alexandru Ioan Cuza” din Iași"
+                    "detail": "Facultatea de Filosofie - Universitatea „Alexandru Ioan Cuza” din Iași"
                 },
                 {
                     "year": "2014",
