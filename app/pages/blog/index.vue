@@ -4,6 +4,8 @@ import { ArrowRight, Clock, Loader2 } from '@lucide/vue'
 
 const { t, locale, te } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
+const router = useRouter()
 
 useSeoMeta({
   title: () => t('blogPage.metaTitle'),
@@ -12,7 +14,21 @@ useSeoMeta({
   ogDescription: () => t('blogPage.subtitle'),
 })
 
-const activeCategory = ref('All')
+const activeCategory = ref<string>((route.query.category as string) || 'All')
+
+watch(
+  () => route.query.category,
+  (newCategory) => {
+    activeCategory.value = (newCategory as string) || 'All'
+  }
+)
+
+const selectCategory = (cat: string) => {
+  activeCategory.value = cat
+  router.replace({
+    query: cat === 'All' ? {} : { category: cat },
+  })
+}
 
 // Fetch public articles
 const { data, pending } = await useFetch<{
@@ -131,7 +147,7 @@ const getCategoryLabel = (cat: string) => {
             v-for="cat in availableCategories"
             :key="cat"
             type="button"
-            @click="activeCategory = cat"
+            @click="selectCategory(cat)"
             :class="[
               'text-[11px] font-semibold tracking-widest uppercase px-4 py-2 rounded-lg border transition-all duration-200',
               activeCategory === cat

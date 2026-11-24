@@ -47,6 +47,7 @@ const recentChronicles = computed(() => {
 const pillars = computed(() => [
   {
     id: 'symbols',
+    category: 'Symbolic Iași',
     title: t('pillars.items.symbols.title'),
     description: t('pillars.items.symbols.description'),
     icon: Hammer,
@@ -54,6 +55,7 @@ const pillars = computed(() => [
   },
   {
     id: 'discover',
+    category: 'Initiatic Iași',
     title: t('pillars.items.discover.title'),
     description: t('pillars.items.discover.description'),
     icon: Scroll,
@@ -61,6 +63,7 @@ const pillars = computed(() => [
   },
   {
     id: 'knowledge',
+    category: 'Enlightenment Iași',
     title: t('pillars.items.knowledge.title'),
     description: t('pillars.items.knowledge.description'),
     icon: BookOpen,
@@ -68,6 +71,7 @@ const pillars = computed(() => [
   },
   {
     id: 'church',
+    category: 'Esoteric Iași',
     title: t('pillars.items.church.title'),
     description: t('pillars.items.church.description'),
     icon: Church,
@@ -152,10 +156,11 @@ const formatDate = (dateStr?: string | null) => {
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div
+        <NuxtLink
           v-for="p in pillars"
           :key="p.id"
-          class="relative overflow-hidden h-[500px] rounded-2xl block border border-white/15 bg-neutral-900/80 shadow-2xl"
+          :to="localePath({ path: '/blog', query: { category: p.category } })"
+          class="group relative overflow-hidden h-[500px] rounded-2xl block border border-white/15 hover:border-emerald-400/50 bg-neutral-900/80 shadow-2xl transition-all duration-300"
         >
           <!-- Card Background Image -->
           <img
@@ -187,7 +192,7 @@ const formatDate = (dateStr?: string | null) => {
               </p>
             </div>
           </div>
-        </div>
+        </NuxtLink>
       </div>
     </section>
 

@@ -21,6 +21,12 @@ useHead({
         name: 'Ghid Cult',
         alternateName: ['GhidCult', 'GhidCult Iași'],
         url: 'https://ghidcult.com',
+        sameAs: [
+          'https://www.linkedin.com/in/ghid-cult/',
+          'https://www.tiktok.com/@adrianilade',
+          'https://www.youtube.com/@adrianilade',
+          'https://www.facebook.com/adrian.ilade',
+        ],
       }),
     },
   ],
