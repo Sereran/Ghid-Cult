@@ -7,8 +7,11 @@ const CITY_BG = "/images/background-image.jpeg"
 
 const { t, tm, rt } = useI18n()
 
-useHead({
-  title: computed(() => t('aboutPage.metaTitle'))
+useSeoMeta({
+  title: () => t('aboutPage.metaTitle'),
+  description: () => t('aboutPage.intro'),
+  ogTitle: () => t('aboutPage.metaTitle'),
+  ogDescription: () => t('aboutPage.intro'),
 })
 
 const credentials = computed(() => {

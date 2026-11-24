@@ -5,8 +5,11 @@ import { ArrowRight, Clock, Loader2 } from '@lucide/vue'
 const { t, locale, te } = useI18n()
 const localePath = useLocalePath()
 
-useHead({
-  title: computed(() => t('blogPage.metaTitle')),
+useSeoMeta({
+  title: () => t('blogPage.metaTitle'),
+  description: () => t('blogPage.subtitle'),
+  ogTitle: () => t('blogPage.metaTitle'),
+  ogDescription: () => t('blogPage.subtitle'),
 })
 
 const activeCategory = ref('All')

@@ -5,8 +5,11 @@ import { Phone, Mail, ArrowUpRight, MapPin, Check, Copy } from '@lucide/vue'
 const PORTRAIT = "/images/portrait.jpeg"
 const { t } = useI18n()
 
-useHead({
-  title: computed(() => t('contactPage.metaTitle'))
+useSeoMeta({
+  title: () => t('contactPage.metaTitle'),
+  description: () => t('contactPage.hero.description'),
+  ogTitle: () => t('contactPage.metaTitle'),
+  ogDescription: () => t('contactPage.hero.description'),
 })
 
 const methods = computed(() => [

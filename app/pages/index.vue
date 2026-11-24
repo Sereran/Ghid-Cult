@@ -15,14 +15,12 @@ import type { ArticleRecord } from '~/data/blog'
 const { t, te, locale, d } = useI18n()
 const localePath = useLocalePath()
 
-useHead({
-  title: computed(() => t('meta.title')),
-  meta: [
-    {
-      name: 'description',
-      content: computed(() => t('meta.description')),
-    },
-  ],
+useSeoMeta({
+  title: () => t('meta.title'),
+  description: () => t('meta.description'),
+  ogTitle: () => t('meta.title'),
+  ogDescription: () => t('meta.description'),
+  ogImage: 'https://ghidcult.com/images/background-image.jpeg',
 })
 
 // Fetch published articles
@@ -45,7 +43,7 @@ const recentChronicles = computed(() => {
   return articles.value.filter((a) => a.id !== featuredArticle.value?.id).slice(0, 3)
 })
 
-// Cultural Focus Pillars of Iași
+// Cultural Focus Pillars of Iasi
 const pillars = computed(() => [
   {
     id: 'symbols',

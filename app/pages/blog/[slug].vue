@@ -32,8 +32,16 @@ const getCategoryLabel = (cat: string) => {
   return te(translationKey) ? t(translationKey) : cat
 }
 
-useHead({
-  title: computed(() => currentPost.value ? `${currentPost.value.title} | GhidCult Blog` : t('articlePage.notFound')),
+useSeoMeta({
+  title: () => currentPost.value ? `${currentPost.value.title} | GhidCult` : t('articlePage.notFound'),
+  description: () => currentPost.value?.shortDescription || '',
+  ogTitle: () => currentPost.value?.title || 'GhidCult',
+  ogDescription: () => currentPost.value?.shortDescription || '',
+  ogImage: () => {
+    const img = currentPost.value?.imageUrl
+    if (!img) return 'https://ghidcult.com/images/background-image.jpeg'
+    return img.startsWith('http') ? img : `https://ghidcult.com${img.startsWith('/') ? '' : '/'}${img}`
+  },
 })
 </script>
 

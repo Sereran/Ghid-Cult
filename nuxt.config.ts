@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
+      title: 'GhidCult | Piatra ne vorbește',
+      meta: [
+        {
+          name: 'description',
+          content: 'Promovez patrimoniul cultural al Iaşului prin workshop-uri inspiraționale şi călătorii de descoperire.'
+        }
+      ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=3' },
         { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico?v=3' }
@@ -13,6 +20,7 @@ export default defineNuxtConfig({
     }
   },
   i18n: {
+    baseUrl: 'https://ghidcult.com',
     locales: [
       { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' },
       { code: 'ro', iso: 'ro-RO', file: 'ro.json', name: 'Română' },
